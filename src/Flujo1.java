@@ -8,22 +8,67 @@ public class Flujo1 {
 
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
-        File fichero1 =   new File("./recursos/foo2.txt");
-        File fichiro2= new File("./recursos/foo.txt");
+      File f1;
+      File f2;
+      String fichero1;
+      String fichero2;
         int eleccion;
         do{
            menu();
            eleccion= scan.nextInt();
+            scan.nextLine();
+           switch (eleccion){
+               case 1:
+                   listaFicheros();
+                   System.out.println("Elige el nombre(sin extencion) de un fichero para leer:");
+                    fichero1 = scan.nextLine();
+                   f1 =   new File("./recursos/"+fichero1+".txt");
+                   if(f1.exists()){
+                       lecturaFichero(f1);
+                       break;
+                   }
+                   else{
+                       System.out.println("fichero no existe !!");
+                       break;
+                   }
+               case 2:
+                   listaFicheros();
+                   System.out.println("Elige el nombre (sin extencion) de dos fichero para primero es el copiar y el segundo para pegar:");
+                    fichero1 = scan.nextLine();
+                    fichero2 = scan.nextLine();
+                   f1 =   new File("./recursos/"+fichero1+".txt");
+                   f2 =   new File("./recursos/"+fichero2+".txt");
+                   if(f1.exists() && f2.exists()){
+                       copiaFichero(f1,f2);
+                       lecturaFichero(f2);
+                       System.out.println();
+                       break;
+                   }
+                   else{
+                       System.out.println("fichero no existe !!");
+                       break;
+                   }
+               case 3:
+                   listaFicheros();
+                   System.out.println("Elige el nombre (sin extencion) de dos fichero para añadir el contenido del primero al segundo:");
+                    fichero1 = scan.nextLine();
+                    fichero2 = scan.nextLine();
+                   f1 =   new File("./recursos/"+fichero1+".txt");
+                   f2 =   new File("./recursos/"+fichero2+".txt");
+                   if(f1.exists() && f2.exists()){
+                       añadirEnFichero(f1,f2);
+                       lecturaFichero(f2);
+                       System.out.println();
+                       break;
+                   }
+                   else{
+                       System.out.println("fichero no existe !!");
+                       break;
+                   }
+           }
 
-        }while ()
-
-       // lecturaFichero(fichero1);
-        System.out.println();
-       // copiaFichero(fichero,fichiroCopia);
-        añadirEnFichero(fichero1,fichiro2);
-
-
-
+        }while (eleccion!=0);
+        System.out.println("Programa terminado!");
     }
 
 
@@ -64,8 +109,14 @@ public class Flujo1 {
 
     }
     public static void menu(){
-        System.out.println("Elige una opción (1,2,3) si queres salir del menu elige 0:");
-        System.out.println("Opción 1: Lectura del fichero:\nOpción 2: Copia del contenido de fichero a otro:\nOpción 3: Añadir el contenido de un fichero al primer fichero:");
+        System.out.println("Elige una opción (1,2,3) para salir del menu elige 0:");
+        System.out.println("Opción 1: Lectura de un fichero:\nOpción 2: Copia del contenido de fichero a otro:\nOpción 3: Añadir el contenido de un fichero al primer fichero:");
+    }
+    public static void listaFicheros(){
+        File f = new File("./recursos");
+        for (String e : f.list()){
+            System.out.println(e);
+        }
     }
 }
 
