@@ -18,15 +18,10 @@ public class TransformaImagen {
     }
     public void procesarImagen() {
         if (f != null) {
-            try (FileInputStream fis = new FileInputStream(f)) {
+            try (FileInputStream file = new FileInputStream(f)) {
+                FileOutputStream file2 = new FileOutputStream("./recursos/penyagolosa_n.bmp");
                 // Leer y procesar los primeros 54 bytes para obtener información diversa
-                byte[] buffer = new byte[54];
-                fis.read(buffer);
 
-                // Aquí puedes realizar acciones con la información obtenida del encabezado (header)
-
-                // Resto del código para procesar los bytes de la imagen (R, G, B)
-                // ...
 
                 System.out.println("Imagen procesada exitosamente.");
             } catch (IOException e) {
@@ -36,20 +31,84 @@ public class TransformaImagen {
             System.out.println("Error: El archivo no ha sido inicializado correctamente.");
         }
     }
-    public void transformaNegativo() throws IOException {
+    // Resto del código para procesar los bytes de la imagen (R, G, B)
+    // ...
+    public void transformaNegativo(){
         // Transformar a negativo y guardar como *_n.bmp
-    }
-    public void transformaOscuro() throws IOException {
-        // Transformar a una imagen más oscura y guardar como *_o.bmp
+        try (FileInputStream file = new FileInputStream(f)){
+            FileOutputStream file2 = new FileOutputStream("./recursos/"+getNombreSinExtension("_n")+".bmp");
+            byte[] cabecera = new byte[54];
+            file.read(cabecera);
+            file2.write(cabecera);
+            int lectura = file.read();
+            while (lectura!=-1){
+                file2.write(255- lectura);
+                lectura = file.read();
 
+            }
+            file.close();
+            file2.close();
+
+        }
+        catch (IOException e){
+            System.out.println("Error al procesar la imagen: " + e.getMessage());
+        }
     }
+    public void transformaOscuro()  {
+        // Transformar a una imagen más oscura y guardar como *_o.bmp
+        try (FileInputStream file = new FileInputStream(f)){
+            FileOutputStream file3 = new FileOutputStream("./recursos/"+getNombreSinExtension("_0")+".bmp");
+            byte[] cabecera = new byte[54];
+            file.read(cabecera);
+            file3.write(cabecera);
+            int lectura = file.read();
+            while (lectura!=-1){
+                file3.write( lectura/2);
+                lectura = file.read();
+
+            }
+            file.close();
+            file3.close();
+
+        }
+        catch (IOException e){
+            System.out.println("Error al procesar la imagen: " + e.getMessage());
+        }
+    }
+
 
     public void transformaBlancoNegro() throws IOException {
         // Transformar a una imagen en blanco y negro y guardar como *_bn.bmp
+        try (FileInputStream file = new FileInputStream(f)){
+            FileOutputStream file4 = new FileOutputStream("./recursos/"+getNombreSinExtension("_0")+".bmp");
+            byte[] cabecera = new byte[54];
+            byte[] pixel = new byte[3];
+            int colorNuv;
+            file.read(cabecera);
+            file4.write(cabecera);
+            int lectura = file.read();
+            while (lectura!=-1){
+                for(int i=0; i<3;i++){
+
+                }
+                file4.write( lectura/2);
+                lectura = file.read();
+
+            }
+            file.close();
+            file4.close();
+
+        }
+        catch (IOException e){
+            System.out.println("Error al procesar la imagen: " + e.getMessage());
+        }
     }
-    private String getNombreSinExtension() {
+    private String getNombreSinExtension(String n) {
         //Devuelve el nombre del archivo f sin extensión
-        return "";
+        String nombreImagen = f.getName();
+        nombreImagen = nombreImagen.substring(0,nombreImagen.indexOf('.'));
+        return "nombreImagen"+n;
     }
+
 
 }
