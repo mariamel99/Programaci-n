@@ -17,23 +17,10 @@ public class TransformaImagen {
 
     }
 
-    public void procesarImagen() {
-        if (f != null) {
-            try (FileInputStream file = new FileInputStream(f)) {
-                // Leer y procesar los primeros 54 bytes para obtener información diversa
-
-                System.out.println("Imagen procesada exitosamente.");
-            } catch (IOException e) {
-                System.out.println("Error al procesar la imagen: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Error: El archivo no ha sido inicializado correctamente.");
-        }
-    }
-
     public void transformaNegativo() {
         // Transformar a negativo y guardar como *_n.bmp
-        try (FileInputStream file = new FileInputStream(f)) {
+        try  {
+            FileInputStream file = new FileInputStream(f);
             FileOutputStream file2 = new FileOutputStream("./recursos/" + getNombreSinExtension("_n") + ".bmp");
             file.read(cabecera);
             file2.write(cabecera);
@@ -53,7 +40,8 @@ public class TransformaImagen {
 
     public void transformaOscuro() {
         // Transformar a una imagen más oscura y guardar como *_o.bmp
-        try (FileInputStream file = new FileInputStream(f)) {
+        try  {
+            FileInputStream file = new FileInputStream(f);
             FileOutputStream file3 = new FileOutputStream("./recursos/" + getNombreSinExtension("_o") + ".bmp");
             file.read(cabecera);
             file3.write(cabecera);
@@ -74,9 +62,10 @@ public class TransformaImagen {
 
     public void transformaBlancoNegro() {
         // Transformar a una imagen en blanco y negro y guardar como *_bn.bmp
-        try (FileInputStream file = new FileInputStream(f)) {
+        try {
+            FileInputStream file = new FileInputStream(f);
             FileOutputStream file4 = new FileOutputStream("./recursos/" + getNombreSinExtension("_nb") + ".bmp");
-            int R = 0, G = 0, B = 0,RGB=0;
+            int R , G , B;
             file.read(cabecera);
             file4.write(cabecera);
             int lectura = file.read();
@@ -84,16 +73,6 @@ public class TransformaImagen {
                R= lectura;
                G= file.read();
                B= file.read();
-               //sumar los que  son menores que 0 con 256.
-               if(R<0){
-                   R+=256;
-               }
-               if(G<0){
-                   G+=256;
-               }
-               if(B<0){
-                   B+=256;
-               }
                int gris = (R+G+B)/3;
                file4.write(gris);
                file4.write(gris);
