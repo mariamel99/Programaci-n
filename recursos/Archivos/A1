@@ -1,0 +1,10 @@
+Origen: Java fue desarrollado por Sun Microsystems en la década de 1990.
+Orientación a Objetos: Es un lenguaje de programación orientado a objetos.
+Portabilidad: Permite "escribir una vez, ejecutar en cualquier lugar" gracias a la JVM.
+Sintaxis Clara: Su sintaxis es limpia y fácil de entender.
+Colecciones: Ofrece bibliotecas para manipular listas, conjuntos y mapas.
+Manejo de Excepciones: Cuenta con un sólido sistema para gestionar errores.
+Entornos de Desarrollo: Se utiliza Eclipse o IntelliJ IDEA como entornos de desarrollo.
+Hilos y Concurrencia: Admite programación concurrente con su modelo de hilos.
+Ediciones: Existen dos ediciones, Java SE para aplicaciones de escritorio y Java EE para aplicaciones empresariales y web.
+Comunidad Activa: Java cuenta con una gran comunidad y abundante documentación en línea.
