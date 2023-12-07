@@ -29,13 +29,11 @@ public class CopaMundial2022 {
         jugadores.add(jugador9);
         jugadores.add(jugador10);
 
-        //listaJugadores(jugadores);
-       guardarLista(jugadores);
-        System.out.println("Introduce el nombre del archivo");
-        String nombreArch = scan.nextLine();
-        leerListaJugadores(nombreArch);
 
-       /* boolean menu= true;
+
+
+
+        boolean menu= true;
         System.out.println("Las selecciones del copa mundial 2022:");
         do {
             menuJugadores();
@@ -43,24 +41,40 @@ public class CopaMundial2022 {
             switch (opcion1){
                 case 1:
                     do{
-                        menuCambios();
+                        leerListaJugadores("./recursos/SeleccionHolandesa.dat");
+                        menuOpcion1();
                         int opcion2 = scan.nextInt();
                         switch (opcion2){
                             case 1:
+                                insertarJugador(jugadores);
                                 break;
                             case 2:
+                                eliminarJugador(jugadores);
                                 break;
                             case 3:
+                                guardarLista(jugadores,"./recursos/SeleccionHolandesa.dat");//Update del archivo de la mi selección
+                                guardarLista(jugadores,"recursos/Selecciones2022.dat");//guarda la lista de la selección en el archivo de todas las selecciones
+                                break;
+                            case 4:
                                 menu = false;
                                 break;
                             default:
                                 System.out.println("opción no válida !!");
                         }
-
-
                     }while (menu);
                     break;
                 case 2:
+                    System.out.println("Introduce el nombre del archivo");
+                    String nombreArch = scan.nextLine();
+                    leerListaJugadores(nombreArch);
+                    System.out.println("Guardar en la lista de las selecciones si | no:");
+                    String opcion3= scan.nextLine();
+                    if(opcion3 =="si"){
+                        guardarLista(jugadores,"recursos/Selecciones2022.dat");
+                    }
+                    else {
+
+                    }
                     break;
                 case 3:
                     System.out.println("Fin del Programa");
@@ -68,12 +82,10 @@ public class CopaMundial2022 {
                 default:
                     System.out.println("opción no válida !!");
             }
-        }while (true);*/
+        }while (true);
 
     }
-    public static void listaJugadores(ArrayList<Jugador> jugadores){
-        for (int i = 0; i < 3; i++){
-            System.out.println("Informaciones del jugador " + (i + 1) + ":");
+    public static void insertarJugador(ArrayList<Jugador> jugadores){
             System.out.println("Introduce su nombre:");
             String nombre = scan.nextLine();
             System.out.println("introduce su año de nacimiento:");
@@ -85,12 +97,25 @@ public class CopaMundial2022 {
             String club = scan.nextLine();
             Jugador jugador = new Jugador(3, "Holland", nombre, año, altura, club);
             jugadores.add(jugador);
+
+    }
+    public static void eliminarJugador(ArrayList<Jugador> jugadores ){
+        scan.nextLine();
+        System.out.println("introduce en nombre del jugador: ");
+        String nombre = scan.nextLine();
+        for (int i = 0; i<jugadores.size(); i++){
+            if (nombre == jugadores.get(i).getNombreJugador()){
+                jugadores.remove(i);
+            }
+            else{
+                System.out.println("nombre no existe.");
+            }
         }
     }
 
-    public static void guardarLista(ArrayList<Jugador> jugadores){
+    public static void guardarLista(ArrayList<Jugador> jugadores, String archivo){
        try {
-           DataOutputStream flujoSalida = new DataOutputStream(new FileOutputStream("./recursos/Seleccion2022.dat"));
+           DataOutputStream flujoSalida = new DataOutputStream(new FileOutputStream(archivo));
           for(int i=0;i<jugadores.size();i++){
               flujoSalida.writeInt(jugadores.get(i).getCodPais());
               flujoSalida.writeUTF(jugadores.get(i).getNombrePais());
@@ -103,29 +128,48 @@ public class CopaMundial2022 {
            System.out.println(e.getMessage());
        }
     }
-    public static void leerListaJugadores(String nombreArchivo){
-
+    public static void leerListaJugadores(String archivo){
+        ArrayList<Jugador> array = new ArrayList<>();
         try{
-            DataInputStream flujoEntrada = new DataInputStream( new FileInputStream(nombreArchivo));
-            ArrayList<Jugador> array = new ArrayList<>();
+            DataInputStream flujoEntrada = new DataInputStream( new FileInputStream(archivo));
+            Jugador jogador ;
             while (flujoEntrada.available()>0) {
+                jogador = new Jugador(flujoEntrada.readInt(), flujoEntrada.readUTF(),flujoEntrada.readUTF(), flujoEntrada.readInt(), flujoEntrada.readFloat(), flujoEntrada.readUTF());
+               array.add(jogador);
+            }
+            flujoEntrada.close();
+            array= ordenarArray(array);
+            for(int i =0 ; i <array.size(); i++){
 
-               System.out.printf("código de país: %d\tPaís: %s\tnombre: %s\t\t\tAño de nacimiento %d\tAltuta %.2f\tClub de procedencia: %s", flujoEntrada.readInt(),
-                       flujoEntrada.readUTF(),flujoEntrada.readUTF(), flujoEntrada.readInt(), flujoEntrada.readFloat(), flujoEntrada.readUTF());
-              System.out.println();
+                System.out.printf("código de país: %d\t País: %s\t nombre: %-16s \t Año de nacimiento %d \t Altura %.2f\t Club de procedencia: %s", array.get(i).getCodPais(), array.get(i).getNombrePais(),  array.get(i).getNombreJugador(),  array.get(i).getAnoNacimiento(),  array.get(i).getAltura(), array.get(i).getClubProcedencia());
+                System.out.println();
             }
         }catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
     }
+    public static  ArrayList<Jugador> ordenarArray(ArrayList<Jugador> jugadores) {
+        for(int i=0; i < jugadores.size()-1; i++){
+            for(int j=0; j < (jugadores.size()-1-i); j++){
+                if(jugadores.get(j).getAnoNacimiento() > jugadores.get(j+1).getAnoNacimiento()){
+                    Jugador jugador = jugadores.get(j);
+                    jugadores.set(j,jugadores.get(j+1));
+                    jugadores.set(j+1,jugador);
+                }
+            }
+        }
+        return jugadores;
+    }
+
+
     public static void menuJugadores(){
         System.out.println("1. Abrir la lista de la selección Holandesa");
         System.out.println("2. leer la selección de compañero");
         System.out.println("3. Salir del Programa.");
         System.out.println("Elige una opción:");
     }
-    public static void menuCambios(){
+    public static void menuOpcion1(){
         System.out.println("1. Insertar un jugador");
         System.out.println("2. Eliminar un jugador");
         System.out.println("3. Guardar los cambios en el archivo");
