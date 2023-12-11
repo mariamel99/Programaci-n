@@ -28,11 +28,8 @@ public class CopaMundial2022 {
         jugadores.add(jugador8);
         jugadores.add(jugador9);
         jugadores.add(jugador10);
-        guardarLista("./recursos/SeleccionHolandesa.dat",false);
-        guardarLista("./recursos/SeleccionHolandesa.dat",true);
-
-
-
+       // guardarLista("./recursos/SeleccionHolandesa.dat",false);
+      //  guardarLista("./recursos/Selecciones2022.dat",true);
 
         System.out.println("Las selecciones del copa mundial 2022:");
         do {
@@ -104,9 +101,11 @@ public class CopaMundial2022 {
         System.out.println("nombre no existe.");
     }*/
     public static File abrirArchivoExistente(){
+        scan.nextLine();
         File f;
         do {
-            System.out.println("Introduce el nombre del archivo del cmpañero:");
+
+            System.out.println("Introduce el nombre del archivo del compañero:");
             String nombreArchivo = scan.nextLine();
              f= new File(nombreArchivo);
         } while (!f.exists());
@@ -129,7 +128,6 @@ public class CopaMundial2022 {
        }
     }
     public static void leerListaJugadores(String archivo){
-
         try{
             DataInputStream flujoEntrada = new DataInputStream( new FileInputStream(archivo));
             Jugador jogador ;
